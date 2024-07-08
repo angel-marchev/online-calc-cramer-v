@@ -6,36 +6,60 @@
     <title>Cramer's V Calculation</title>
 </head>
 <body>
-    <h1 align="center">Cramer's V Calculation</h1>
+    <h1 align="center">Cramer's V Calculations</h1>
+    <p align="justify" style="margin-left:30%;margin-right:30%;">This online calculator addresses 
+        the issue of objectivity in the choice of proper sizes of association’s strength between 
+        categorical variables, applying Cramér’s coefficient, V. The calculator could be used in two ways: 
+        to calculate Cramer cutoff values or to calculate strength of association for an observed 
+        Cramer value. So in order to use it either effect sizes or observed Cramer's V value must be provided.
+        The input cells are initially loaded with test values, which could be changed. All inputs are automatically 
+        validated. The calculator's method and all details are published in the following paper:<br><br>
+                Cite:<br><i>Haralampiev, K., D. Blagoev, 2025. Reconsidering Cramér’s Measure of Association. AIP Conference Proceedings</i></p>
     <div class="tg-wrap"><table border="1" cellspacing="0" cellpadding="10" align="center"><tbody>
     <form id="cramerForm">
         <tr>
             <td colspan="2">
+                <p align="justify">These fields the always needed for both posible ways of using<br>
+                    the calculator. The number of categories of the independent and<br>
+                    dependent variable are input. They must be integers greater than 1.</p>
                 <label for="independent">Number of categories of the independent variable:</label>
-                <input type="number" id="independent" name="independent" step="1" style="width: 30px;" required><br><br>
+                <input type="number" id="independent" name="independent" step="1" value="2" style="width: 30px;" required><br><br>
         
                 <label for="dependent">Number of categories of the dependent variable:</label>
-                <input type="number" id="dependent" name="dependent" step="1" style="width: 30px;" required><br><br>
+                <input type="number" id="dependent" name="dependent" step="1" value="2" style="width: 30px;" required><br><br>
             </td>
         </tr>
         <tr>
-            <td>
+            <td valign="top">
+                <p>To calculate the Cramer cutoffs,<br>
+                   input the effect size values.<br>
+                   Values for effect sizes must be<br>
+                   between 0 and 1. Also they must<br>
+                   in monotonous order.</p>
                 <label for="smallEffect">Small effect size:</label>
-                <input type="number" id="smallEffect" name="smallEffect" step="0.01" style="width: 50px;"><br><br>
+                <input type="number" id="smallEffect" name="smallEffect" step="0.01" value="0.05" style="width: 50px;"><br><br>
 
                 <label for="mediumEffect">Medium effect size:</label>
-                <input type="number" id="mediumEffect" name="mediumEffect" step="0.01" style="width: 50px;"><br><br>
+                <input type="number" id="mediumEffect" name="mediumEffect" step="0.01" value="0.15" style="width: 50px;"><br><br>
 
                 <label for="largeEffect">Large effect size:</label>
-                <input type="number" id="largeEffect" name="largeEffect" step="0.01" style="width: 50px;"><br><br>
+                <input type="number" id="largeEffect" name="largeEffect" step="0.01" value="0.25" style="width: 50px;"><br><br>
             </td>
             <td valign="top">
+                <p>To estimate the effect size,<br>
+                    input the Cramer's coefficient<br>
+                    as calculated from the data.<br>
+                    Values for observed Cramer's V<br>
+                    must be between 0 and 1.<br></p>
                 <label for="observed">Observed Cramer's V:</label>
-                <input type="number" id="observed" name="observed" step="0.01" style="width: 50px;"><br><br>
+                <input type="number" id="observed" name="observed" step="0.01" value="0.5" style="width: 50px;"><br><br>
             </td>
         </tr>
         <tr>
             <td colspan="2">
+                <p align="center"> When all needed inputs are set, press "Calculate" to validate all<br>
+                   cells and get the results. Note, that the Cramer's coefficient<br>
+                   can not take values above 1</p>
                 <button type="button" style="position: relative; left: 40%;" onclick="calculate()">Calculate</button>
             
     
@@ -99,7 +123,7 @@
 
             // Validate obligatory inputs
             if (!validations.I2(I2) || !validations.I3(I3)) {
-                alert('Independent and Dependent categories are obligatory and must be integers greater than 1.');
+                alert('Independent and Dependent number of categories are obligatory and must be integers greater than 1.');
                 return;
             }
 
