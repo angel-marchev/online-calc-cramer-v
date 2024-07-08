@@ -81,12 +81,12 @@
         };
 
         const validations = {
-            I2: (value) => value > 0,
-            I3: (value) => value > 0,
-            B8: (value) => value >= 0,
-            I7: (value) => value >= 0,
-            B9: (value, B8) => value > B8,
-            B10: (value, B9) => value > B9
+            I2: (value) => Number.isInteger(value) && value > 0,
+            I3: (value) => Number.isInteger(value) && value > 0,
+            B8: (value) => value >= 0 && value <= 1,
+            I7: (value) => value >= 0 && value <= 1,
+            B9: (value, B8) => value > B8 && value <= 1,
+            B10: (value, B9) => value > B9 && value <= 1
         };
 
         function calculate() {
@@ -99,7 +99,7 @@
 
             // Validate obligatory inputs
             if (!validations.I2(I2) || !validations.I3(I3)) {
-                alert('Independent and Dependent categories are obligatory and must be greater than 0.');
+                alert('Independent and Dependent categories are obligatory and must be integers greater than 0.');
                 return;
             }
 
@@ -108,16 +108,23 @@
             const observedProvided = !isNaN(I7);
 
             if (!effectSizesProvided && !observedProvided) {
-                alert('Either effect sizes or observed Cramer\'s V value must be provided.');
+                alert('Either effect sizes OR observed Cramer\'s V value must be provided.');
                 return;
             }
 
             // Validate the relationship between effect sizes
             if (effectSizesProvided && !(validations.B9(B9, B8) && validations.B10(B10, B9))) {
-                alert('Effect sizes must satisfy: small < medium < large');
+                alert('Values for effect sizes must be between 0 and 1. Additionally, effect sizes must satisfy: small < medium < large.');
                 return;
             }
 
+            // Validate the relationship between effect sizes
+            if (observedProvided && !(validations.I7(I7))) {
+                alert('Values for observed Cramer\'s V must be between 0 and 1.');
+                return;
+            }
+
+            
             // Calculate intermediate values
             let resultsHtml = '';
 
@@ -156,8 +163,7 @@
                 const J7 = formulas.J7(I7, B8, B9, B10, 'Very weak association', 'Weak association', 'Moderate association', 'Strong association');
 
                 resultsHtml += `
-                    <p>For observed Cramer\'s V...</p> 
-                    <p>...${J7}</p>
+                    <p>${J7} for the observed Cramer\'s V.</p>
                     <p>Estimated effect size: ${I9.toFixed(3)} ${J9}</p>
                     
                 `;
