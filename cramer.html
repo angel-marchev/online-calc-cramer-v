@@ -12,26 +12,26 @@
         <tr>
             <td colspan="2">
                 <label for="independent">Number of categories of independent variable:</label>
-                <input type="number" id="independent" name="independent" step="1" required><br><br>
+                <input type="number" id="independent" name="independent" step="1" style="width: 30px;" required><br><br>
         
                 <label for="dependent">Number of categories of dependent variable:</label>
-                <input type="number" id="dependent" name="dependent" step="1" required><br><br>
+                <input type="number" id="dependent" name="dependent" step="1" style="width: 30px;" required><br><br>
             </td>
         </tr>
         <tr>
             <td>
-                <label for="smallEffect">Small effect size:</label><br>
-                <input type="number" id="smallEffect" name="smallEffect" step="0.01"><br><br>
+                <label for="smallEffect">Small effect size:</label>
+                <input type="number" id="smallEffect" name="smallEffect" step="0.01" style="width: 50px;"><br><br>
 
-                <label for="mediumEffect">Medium effect size:</label><br>
-                <input type="number" id="mediumEffect" name="mediumEffect" step="0.01"><br><br>
+                <label for="mediumEffect">Medium effect size:</label>
+                <input type="number" id="mediumEffect" name="mediumEffect" step="0.01" style="width: 50px;"><br><br>
 
-                <label for="largeEffect">Large effect size:</label><br>
-                <input type="number" id="largeEffect" name="largeEffect" step="0.01"><br><br>
+                <label for="largeEffect">Large effect size:</label>
+                <input type="number" id="largeEffect" name="largeEffect" step="0.01" style="width: 50px;"><br><br>
             </td>
             <td valign="top">
-                <label for="observed">Observed Cramer's V:</label><br>
-                <input type="number" id="observed" name="observed" step="0.01"><br><br>
+                <label for="observed">Observed Cramer's V:</label>
+                <input type="number" id="observed" name="observed" step="0.01" style="width: 50px;"><br><br>
             </td>
         </tr>
         <tr>
@@ -81,8 +81,8 @@
         };
 
         const validations = {
-            I2: (value) => Number.isInteger(value) && value > 0,
-            I3: (value) => Number.isInteger(value) && value > 0,
+            I2: (value) => Number.isInteger(value) && value > 1,
+            I3: (value) => Number.isInteger(value) && value > 1,
             B8: (value) => value >= 0 && value <= 1,
             I7: (value) => value >= 0 && value <= 1,
             B9: (value, B8) => value > B8 && value <= 1,
@@ -99,7 +99,7 @@
 
             // Validate obligatory inputs
             if (!validations.I2(I2) || !validations.I3(I3)) {
-                alert('Independent and Dependent categories are obligatory and must be integers greater than 0.');
+                alert('Independent and Dependent categories are obligatory and must be integers greater than 1.');
                 return;
             }
 
