@@ -6,30 +6,42 @@
     <title>Cramer's V Calculation</title>
 </head>
 <body>
-    <h1>Cramer's V Calculation</h1>
+    <h1 align="center">Cramer's V Calculation</h1>
+    <div class="tg-wrap"><table border="1" cellspacing="0" cellpadding="10" align="center"><tbody>
     <form id="cramerForm">
-        <label for="independent">Number of categories of independent variable (I2):</label>
-        <input type="number" id="independent" name="independent" required><br><br>
+        <tr>
+            <td colspan="2">
+                <label for="independent">Number of categories of independent variable:</label>
+                <input type="number" id="independent" name="independent" required><br><br>
         
-        <label for="dependent">Number of categories of dependent variable (I3):</label>
-        <input type="number" id="dependent" name="dependent" required><br><br>
-        
-        <label for="observed">Observed Cramer's V (I7):</label>
-        <input type="number" id="observed" name="observed" step="0.01"><br><br>
+                <label for="dependent">Number of categories of dependent variable:</label>
+                <input type="number" id="dependent" name="dependent" required><br><br>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="smallEffect">Small effect size:</label><br>
+                <input type="number" id="smallEffect" name="smallEffect" step="0.01"><br><br>
 
-        <label for="smallEffect">Small effect size (B8):</label>
-        <input type="number" id="smallEffect" name="smallEffect" step="0.01"><br><br>
+                <label for="mediumEffect">Medium effect size:</label><br>
+                <input type="number" id="mediumEffect" name="mediumEffect" step="0.01"><br><br>
 
-        <label for="mediumEffect">Medium effect size (B9):</label>
-        <input type="number" id="mediumEffect" name="mediumEffect" step="0.01"><br><br>
-
-        <label for="largeEffect">Large effect size (B10):</label>
-        <input type="number" id="largeEffect" name="largeEffect" step="0.01"><br><br>
-
-        <button type="button" onclick="calculate()">Calculate</button>
+                <label for="largeEffect">Large effect size:</label><br>
+                <input type="number" id="largeEffect" name="largeEffect" step="0.01"><br><br>
+            </td>
+            <td valign="top">
+                <label for="observed">Observed Cramer's V:</label><br>
+                <input type="number" id="observed" name="observed" step="0.01"><br><br>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="button" style="position: relative; left: 40%;" onclick="calculate()">Calculate</button>
+            
+    
     </form>
     
-    <h2>Results:</h2>
+    <h3>Results:</h3>
     <div id="results"></div>
 
     <script>
@@ -96,13 +108,13 @@
             const observedProvided = !isNaN(I7);
 
             if (!effectSizesProvided && !observedProvided) {
-                alert('Either effect sizes (B8, B9, B10) or observed value (I7) must be provided.');
+                alert('Either effect sizes or observed Cramer\'s V value must be provided.');
                 return;
             }
 
             // Validate the relationship between effect sizes
             if (effectSizesProvided && !(validations.B9(B9, B8) && validations.B10(B10, B9))) {
-                alert('Effect sizes must satisfy: B8 < B9 < B10');
+                alert('Effect sizes must satisfy: small < medium < large');
                 return;
             }
 
@@ -115,9 +127,10 @@
                 const C10 = formulas.C10(I2, I3, B10);
 
                 resultsHtml += `
-                    <p>Intermediate Value C8: ${C8 >= 1 ? "-" : C8.toFixed(4)}</p>
-                    <p>Intermediate Value C9: ${C9 >= 1 ? "-" : C9.toFixed(4)}</p>
-                    <p>Intermediate Value C10: ${C10 >= 1 ? "-" : C10.toFixed(4)}</p>
+                    <p>Calculated Cramer\'s V for ...</p>
+                    <p>... small effect size: ${C8 >= 1 ? "-" : C8.toFixed(4)}</p>
+                    <p>... medium effect size: ${C9 >= 1 ? "-" : C9.toFixed(4)}</p>
+                    <p>... large effect size: ${C10 >= 1 ? "-" : C10.toFixed(4)}</p>
                     <p>Interval Scale:</p>
                     <ul>
                         <li>Up to ${C8.toFixed(4)}: Very weak association</li>
@@ -125,6 +138,7 @@
                         <li>Between ${C9.toFixed(4)} and ${C10.toFixed(4)}: Moderate association</li>
                         <li>${C10.toFixed(4)} and more: Strong association</li>
                     </ul>
+                    <br><p></p>
                 `;
             }
 
@@ -134,9 +148,10 @@
                 const J7 = formulas.J7(I7, B8, B9, B10, 'Very weak association', 'Weak association', 'Moderate association', 'Strong association');
 
                 resultsHtml += `
-                    <p>Intermediate Value I9: ${I9.toFixed(4)}</p>
-                    <p>Intermediate Value J9: ${J9}</p>
-                    <p>Final Result: ${J7}</p>
+                    <p>For observed Cramer\'s V...</p> 
+                    <p>...${J7}</p>
+                    <p>Estimated effect size: ${I9.toFixed(4)} ${J9}</p>
+                    
                 `;
             }
 
@@ -144,5 +159,9 @@
             document.getElementById('results').innerHTML = resultsHtml;
         }
     </script>
+            </td>
+        </tr>
+        </tbody>
+    </table></div>
 </body>
 </html>
