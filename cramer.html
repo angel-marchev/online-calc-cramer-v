@@ -11,10 +11,10 @@
     <form id="cramerForm">
         <tr>
             <td colspan="2">
-                <label for="independent">Number of categories of independent variable:</label>
+                <label for="independent">Number of categories of the independent variable:</label>
                 <input type="number" id="independent" name="independent" step="1" style="width: 30px;" required><br><br>
         
-                <label for="dependent">Number of categories of dependent variable:</label>
+                <label for="dependent">Number of categories of the dependent variable:</label>
                 <input type="number" id="dependent" name="dependent" step="1" style="width: 30px;" required><br><br>
             </td>
         </tr>
@@ -142,7 +142,7 @@
                 const strongAssociation = intervalC10 >= 1 ? 'Impossible value' : `${intervalC10} and more: Strong association`;
 
                 resultsHtml += `
-                    <p>Calculated Cramer's V for ...</p>
+                    <p>Cutoff values of Cramer's V for ...</p>
                     <p>... small effect size: ${C8 >= 1 ? "-" : C8.toFixed(3)}</p>
                     <p>... medium effect size: ${C9 >= 1 ? "-" : C9.toFixed(3)}</p>
                     <p>... large effect size: ${C10 >= 1 ? "-" : C10.toFixed(3)}</p>
