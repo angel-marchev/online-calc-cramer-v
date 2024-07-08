@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cramer's V Calculation</title>
+</head>
+<body>
+    <h1>Cramer's V Calculation</h1>
+    <form id="cramerForm">
+        <label for="independent">Number of categories of independent variable (I2):</label>
+        <input type="number" id="independent" name="independent" required><br><br>
+        
+        <label for="dependent">Number of categories of dependent variable (I3):</label>
+        <input type="number" id="dependent" name="dependent" required><br><br>
+        
+        <label for="observed">Observed Cramer's V (I7):</label>
+        <input type="number" id="observed" name="observed" step="0.01"><br><br>
+
+        <label for="smallEffect">Small effect size (B8):</label>
+        <input type="number" id="smallEffect" name="smallEffect" step="0.01"><br><br>
+
+        <label for="mediumEffect">Medium effect size (B9):</label>
+        <input type="number" id="mediumEffect" name="mediumEffect" step="0.01"><br><br>
+
+        <label for="largeEffect">Large effect size (B10):</label>
+        <input type="number" id="largeEffect" name="largeEffect" step="0.01"><br><br>
+
+        <button type="button" onclick="calculate()">Calculate</button>
+    </form>
+    
+    <h2>Results:</h2>
+    <div id="results"></div>
+
+    <script>
+        const formulas = {
+            J7: (I7, C8, C9, C10, E12, E13, E14, E15) => 
+                I7 === "" ? "" : 
+                C8 === "" ? "" : 
+                C9 === "" ? "" : 
+                C10 === "" ? "" : 
+                I7 < C8 ? E12 : 
+                I7 < C9 ? E13 : 
+                I7 < C10 ? E14 : E15,
+            C8: (I2, I3, B8) => 
+                I2 === "" ? "" : 
+                I3 === "" ? "" : 
+                B8 === "" ? "" : I3 * B8 / 2 / Math.sqrt(Math.min(I2 - 1, I3 - 1)),
+            C9: (I2, I3, B9) => 
+                I2 === "" ? "" : 
+                I3 === "" ? "" : 
+                B9 === "" ? "" : I3 * B9 / 2 / Math.sqrt(Math.min(I2 - 1, I3 - 1)),
+            I9: (I2, I3, I7) => 
+                I2 === "" ? "" : 
+                I3 === "" ? "" : 
+                I7 === "" ? "" : 2 * I7 * Math.sqrt(Math.min(I2 - 1, I3 - 1)) / I3,
+            J9: (I9) => 
+                I9 === "" ? "" : `(${Math.round(I9 * 100)} percentage points)`,
+            C10: (I2, I3, B10) => 
+                I2 === "" ? "" : 
+                I3 === "" ? "" : 
+                B10 === "" ? "" : I3 * B10 / 2 / Math.sqrt(Math.min(I2 - 1, I3 - 1)),
+            D12: (C8) => C8 >= 1 ? "-" : C8.toFixed(4),
+            B13: (C8) => C8 >= 1 ? "-" : C8.toFixed(4),
+            D13: (C9) => C9 >= 1 ? "-" : C9.toFixed(4),
+            B14: (C9) => C9 >= 1 ? "-" : C9.toFixed(4),
+            D14: (C10) => C10 >= 1 ? "-" : C10.toFixed(4),
+            B15: (C10) => C10 >= 1 ? "-" : C10.toFixed(4)
+        };
+
+        const validations = {
+            I2: (value) => value > 0,
+            I3: (value) => value > 0,
+            B8: (value) => value >= 0,
+            I7: (value) => value >= 0,
+            B9: (value, B8) => value > B8,
+            B10: (value, B9) => value > B9
+        };
+
+        function calculate() {
+            const I2 = parseFloat(document.getElementById('independent').value);
+            const I3 = parseFloat(document.getElementById('dependent').value);
+            const I7 = parseFloat(document.getElementById('observed').value);
+            const B8 = parseFloat(document.getElementById('smallEffect').value);
+            const B9 = parseFloat(document.getElementById('mediumEffect').value);
+            const B10 = parseFloat(document.getElementById('largeEffect').value);
+
+            // Validate obligatory inputs
+            if (!validations.I2(I2) || !validations.I3(I3)) {
+                alert('Independent and Dependent categories are obligatory and must be greater than 0.');
+                return;
+            }
+
+            // Validate that either effect sizes or observed value are provided
+            const effectSizesProvided = !isNaN(B8) && !isNaN(B9) && !isNaN(B10);
+            const observedProvided = !isNaN(I7);
+
+            if (!effectSizesProvided && !observedProvided) {
+                alert('Either effect sizes (B8, B9, B10) or observed value (I7) must be provided.');
+                return;
+            }
+
+            // Validate the relationship between effect sizes
+            if (effectSizesProvided && !(validations.B9(B9, B8) && validations.B10(B10, B9))) {
+                alert('Effect sizes must satisfy: B8 < B9 < B10');
+                return;
+            }
+
+            // Calculate intermediate values
+            let resultsHtml = '';
+
+            if (effectSizesProvided) {
+                const C8 = formulas.C8(I2, I3, B8);
+                const C9 = formulas.C9(I2, I3, B9);
+                const C10 = formulas.C10(I2, I3, B10);
+
+                resultsHtml += `
+                    <p>Intermediate Value C8: ${C8 >= 1 ? "-" : C8.toFixed(4)}</p>
+                    <p>Intermediate Value C9: ${C9 >= 1 ? "-" : C9.toFixed(4)}</p>
+                    <p>Intermediate Value C10: ${C10 >= 1 ? "-" : C10.toFixed(4)}</p>
+                    <p>Interval Scale:</p>
+                    <ul>
+                        <li>Up to ${C8.toFixed(4)}: Very weak association</li>
+                        <li>Between ${C8.toFixed(4)} and ${C9.toFixed(4)}: Weak association</li>
+                        <li>Between ${C9.toFixed(4)} and ${C10.toFixed(4)}: Moderate association</li>
+                        <li>${C10.toFixed(4)} and more: Strong association</li>
+                    </ul>
+                `;
+            }
+
+            if (observedProvided) {
+                const I9 = formulas.I9(I2, I3, I7);
+                const J9 = formulas.J9(I9);
+                const J7 = formulas.J7(I7, B8, B9, B10, 'Very weak association', 'Weak association', 'Moderate association', 'Strong association');
+
+                resultsHtml += `
+                    <p>Intermediate Value I9: ${I9.toFixed(4)}</p>
+                    <p>Intermediate Value J9: ${J9}</p>
+                    <p>Final Result: ${J7}</p>
+                `;
+            }
+
+            // Display results
+            document.getElementById('results').innerHTML = resultsHtml;
+        }
+    </script>
+</body>
+</html>
