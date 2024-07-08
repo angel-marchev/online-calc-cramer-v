@@ -125,18 +125,26 @@
                 const C8 = formulas.C8(I2, I3, B8);
                 const C9 = formulas.C9(I2, I3, B9);
                 const C10 = formulas.C10(I2, I3, B10);
+                
+                const intervalC8 = C8 >= 1 ? 1 : C8.toFixed(4);
+                const intervalC9 = C9 >= 1 ? 1 : C9.toFixed(4);
+                const intervalC10 = C10 >= 1 ? 1 : C10.toFixed(4);
+
+                const weakAssociation = intervalC8 >= 1 ? 'Impossible value' : `Between ${intervalC8} and ${intervalC9}: Weak association`;
+                const moderateAssociation = intervalC9 >= 1 ? 'Impossible value' : `Between ${intervalC9} and ${intervalC10}: Moderate association`;
+                const strongAssociation = intervalC10 >= 1 ? 'Impossible value' : `${intervalC10} and more: Strong association`;
 
                 resultsHtml += `
-                    <p>Calculated Cramer\'s V for ...</p>
+                    <p>Calculated Cramer's V for ...</p>
                     <p>... small effect size: ${C8 >= 1 ? "-" : C8.toFixed(4)}</p>
                     <p>... medium effect size: ${C9 >= 1 ? "-" : C9.toFixed(4)}</p>
                     <p>... large effect size: ${C10 >= 1 ? "-" : C10.toFixed(4)}</p>
                     <p>Interval Scale:</p>
                     <ul>
-                        <li>Up to ${C8.toFixed(4)}: Very weak association</li>
-                        <li>Between ${C8.toFixed(4)} and ${C9.toFixed(4)}: Weak association</li>
-                        <li>Between ${C9.toFixed(4)} and ${C10.toFixed(4)}: Moderate association</li>
-                        <li>${C10.toFixed(4)} and more: Strong association</li>
+                        <li>Up to ${intervalC8}: Very weak association</li>
+                        <li>${weakAssociation}</li>
+                        <li>${moderateAssociation}</li>
+                        <li>${strongAssociation}</li>
                     </ul>
                     <br><p></p>
                 `;
