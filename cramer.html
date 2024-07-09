@@ -36,7 +36,7 @@
 
         @media (min-width: 768px) {
             table {
-                width: 40%;
+                width: 60%;
             }
         }
 
@@ -58,23 +58,26 @@
 <body>
     <h1 align="center">Cramer's V Calculations</h1>
     
-    <div class="tg-wrap"><table border="1" cellspacing="0" cellpadding="10" align="center"><tbody>
-    <form id="cramerForm">
+    <div class="tg-wrap">
+        <table border="1" cellspacing="0" cellpadding="10" align="center">
+            <tbody>
+                <form id="cramerForm">
         <tr>
+            
             <td colspan="2" style="border-top-style: hidden;border-left-style: hidden;border-right-style: hidden;"><p align="justify">This online calculator addresses 
         the issue of objectivity in the choice of proper sizes of association’s strength between 
-        categorical variables, applying Cramér’s coefficient, V. The calculator could be used in two ways: 
+        categorical variables, applying Cramér’s coefficient V. The calculator could be used to solve two different tasks: 
         to calculate Cramer cutoff values or to calculate strength of association for an observed 
-        Cramer value. So in order to use it either effect sizes or observed Cramer's V value must be provided.
-        The input cells are initially loaded with test values, which could be changed. All inputs are automatically 
+        Cramer value. So in order to use it either effect sizes or observed Cramer's V value must be provided. 
+        The input cells are initially populated with test values, which could be changed. If you wish to not see the results for one of the tasks, just erase the corresponding input values. All inputs are automatically 
         validated. The calculator's method and all details are published in the following paper:<br><br>
                 Cite:<br><i>Haralampiev, K., D. Blagoev, 2025. Reconsidering Cramér’s Measure of Association. AIP Conference Proceedings</i></p></td>
         </tr>
-                <tr>
+        <tr>
             <td colspan="2">
-                <p align="justify">These fields the always needed for both posible ways of using
-                    the calculator. The number of categories of the independent and
-                    dependent variable are input. They must be integers greater than 1.</p>
+                <p align="justify">Here, the number of categories of the independent and
+                    dependent variable are input. These two fields the always needed for both posible ways of using
+                    the calculator. They must be integers greater than 1.</p>
                 <label for="independent">Number of categories of the independent variable:</label>
                 <input type="number" id="independent" name="independent" step="1" value="2" style="width: 30px;" required><br><br>
         
@@ -83,12 +86,11 @@
             </td>
         </tr>
         <tr>
-            <td valign="top">
+            <td valign="top" width="50%">
                 <p align="justify">To calculate the Cramer cutoffs,
-                   input the effect size values.
-                   Values for effect sizes must be
-                   between 0 and 1. Also they must
-                   in monotonous order.</p>
+                   input here the effect size values, which must be 
+                   between 0 and 1. Also they must be
+                   in monotonous increasing order. The pre-set values are recommended for use.</p>
                 <label for="smallEffect">Small effect size:</label>
                 <input type="number" id="smallEffect" name="smallEffect" step="0.01" value="0.05" style="width: 50px;"><br><br>
 
@@ -98,29 +100,31 @@
                 <label for="largeEffect">Large effect size:</label>
                 <input type="number" id="largeEffect" name="largeEffect" step="0.01" value="0.25" style="width: 50px;"><br><br>
             </td>
-            <td valign="top">
+            <td valign="top" width="50%">
                 <p align="justify">To estimate the effect size,
                     input the Cramer's coefficient
                     as calculated from the data.
                     Values for observed Cramer's V
                     must be between 0 and 1.<br></p>
                 <label for="observed">Observed Cramer's V:</label>
-                <input type="number" id="observed" name="observed" step="0.01" value="0.5" style="width: 50px;"><br><br>
+                <input type="number" id="observed" name="observed" step="0.01" style="width: 50px;"><br><br>
             </td>
         </tr>
         <tr>
-            <td colspan="2">
+            <td colspan="2" style="border-bottom-style: hidden;">
                 <p align="justify"> When all needed inputs are set, press "Calculate" to validate all
                    cells and get the results. Note, that the Cramer's coefficient
-                   can not take values above 1</p>
-                <button type="button" style="position: relative; left: 40%;" onclick="calculate()">Calculate</button>
+                   can not have values above 1</p>
+                <button type="button" style="position: relative; left: 43%;" onclick="calculate()">Calculate</button>
             
     
     </form>
-    
-    <h3>Results:</h3>
+        <h3><center>Results:</center></h3>
     <div id="results"></div>
-
+        </td>
+        </tr>
+        <tr>
+            <td>
     <script>
         const formulas = {
             J7: (I7, C8, C9, C10, E12, E13, E14, E15) => 
@@ -144,17 +148,17 @@
                 I3 === "" ? "" : 
                 I7 === "" ? "" : 2 * I7 * Math.sqrt(Math.min(I2 - 1, I3 - 1)) / I3,
             J9: (I9) => 
-                I9 === "" ? "" : `(${Math.round(I9 * 100)} percentage points)`,
+                I9 === "" ? "" : `(${Math.round(I9 * 1000)/10} percentage points)`,
             C10: (I2, I3, B10) => 
                 I2 === "" ? "" : 
                 I3 === "" ? "" : 
                 B10 === "" ? "" : I3 * B10 / 2 / Math.sqrt(Math.min(I2 - 1, I3 - 1)),
-            D12: (C8) => C8 >= 1 ? "-" : C8.toFixed(3),
-            B13: (C8) => C8 >= 1 ? "-" : C8.toFixed(3),
-            D13: (C9) => C9 >= 1 ? "-" : C9.toFixed(3),
-            B14: (C9) => C9 >= 1 ? "-" : C9.toFixed(3),
-            D14: (C10) => C10 >= 1 ? "-" : C10.toFixed(3),
-            B15: (C10) => C10 >= 1 ? "-" : C10.toFixed(3)
+            D12: (C8) => C8 > 1 ? "-" : C8.toFixed(3),
+            B13: (C8) => C8 > 1 ? "-" : C8.toFixed(3),
+            D13: (C9) => C9 > 1 ? "-" : C9.toFixed(3),
+            B14: (C9) => C9 > 1 ? "-" : C9.toFixed(3),
+            D14: (C10) => C10 > 1 ? "-" : C10.toFixed(3),
+            B15: (C10) => C10 > 1 ? "-" : C10.toFixed(3)
         };
 
         const validations = {
@@ -210,26 +214,24 @@
                 const C9 = formulas.C9(I2, I3, B9);
                 const C10 = formulas.C10(I2, I3, B10);
                 
-                const intervalC8 = C8 >= 1 ? 1 : C8.toFixed(3);
-                const intervalC9 = C9 >= 1 ? 1 : C9.toFixed(3);
-                const intervalC10 = C10 >= 1 ? 1 : C10.toFixed(3);
+                const intervalC8 = C8 > 1 ? 1 : C8.toFixed(3);
+                const intervalC9 = C9 > 1 ? 1 : C9.toFixed(3);
+                const intervalC10 = C10 > 1 ? 1 : C10.toFixed(3);
 
-                const weakAssociation = intervalC8 >= 1 ? 'Impossible value' : `Between ${intervalC8} and ${intervalC9}: Weak association`;
-                const moderateAssociation = intervalC9 >= 1 ? 'Impossible value' : `Between ${intervalC9} and ${intervalC10}: Moderate association`;
-                const strongAssociation = intervalC10 >= 1 ? 'Impossible value' : `${intervalC10} and more: Strong association`;
+                const weakAssociation = intervalC8 > 1 ? ' ' : `Between ${intervalC8} and ${intervalC9}: Weak association`;
+                const moderateAssociation = intervalC9 > 1 ? ' ' : `Between ${intervalC9} and ${intervalC10}: Moderate association`;
+                const strongAssociation = intervalC10 > 1 ? ' ' : `${intervalC10} and more: Strong association`;
 
                 resultsHtml += `
                     <p>Cutoff values of Cramer's V for ...</p>
-                    <p>... small effect size: ${C8 >= 1 ? "-" : C8.toFixed(3)}</p>
-                    <p>... medium effect size: ${C9 >= 1 ? "-" : C9.toFixed(3)}</p>
-                    <p>... large effect size: ${C10 >= 1 ? "-" : C10.toFixed(3)}</p>
-                    <p>Interval Scale:</p>
-                    <ul>
-                        <li>Up to ${intervalC8}: Very weak association</li>
-                        <li>${weakAssociation}</li>
-                        <li>${moderateAssociation}</li>
-                        <li>${strongAssociation}</li>
-                    </ul>
+                    <p>... small effect size: ${C8 > 1 ? "-" : C8.toFixed(3)}</p>
+                    <p>... medium effect size: ${C9 > 1 ? "-" : C9.toFixed(3)}</p>
+                    <p>... large effect size: ${C10 > 1 ? "-" : C10.toFixed(3)}</p>
+                    <p>Intervals:</p>
+                    <p>Up to ${intervalC8}: Very weak association</p>
+                    <p>${weakAssociation}</p>
+                    <p>${moderateAssociation}</p>
+                    <p>${strongAssociation}</p>
                     <br><p></p>
                 `;
             }
@@ -240,7 +242,7 @@
                 const J7 = formulas.J7(I7, B8, B9, B10, 'Very weak association', 'Weak association', 'Moderate association', 'Strong association');
 
                 resultsHtml += `
-                    <p>${J7} for the observed Cramer\'s V.</p>
+                    <p>${J7} for the observed Cramer\'s V of ${I7.toFixed(3)}.</p>
                     <p>Estimated effect size: ${I9.toFixed(3)} ${J9}</p>
                     
                 `;
@@ -251,9 +253,11 @@
         }
     </script>
             </td>
+            <td></td>
         </tr>
         </tbody>
-    </table></div>
+        </table>
+    </div>
 <p></p>
 </body>
 </html>
