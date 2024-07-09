@@ -120,11 +120,19 @@
     
     </form>
         <h3><center>Results:</center></h3>
-    <div id="results"></div>
+    
         </td>
         </tr>
         <tr>
-            <td>
+            <td><div id="results1"></div>
+                </td>
+            <td valign="top" style="border-left-style: hidden;"><div id="results2"></div>
+            </td>
+        </tr>
+        </tbody>
+        </table>
+    </div>
+<p></p>
     <script>
         const formulas = {
             J7: (I7, C8, C9, C10, E12, E13, E14, E15) => 
@@ -207,7 +215,8 @@
 
             
             // Calculate intermediate values
-            let resultsHtml = '';
+            let results1Html = '';
+            let results2Html = '';
 
             if (effectSizesProvided) {
                 const C8 = formulas.C8(I2, I3, B8);
@@ -222,7 +231,7 @@
                 const moderateAssociation = intervalC9 > 1 ? ' ' : `Between ${intervalC9} and ${intervalC10}: Moderate association`;
                 const strongAssociation = intervalC10 > 1 ? ' ' : `${intervalC10} and more: Strong association`;
 
-                resultsHtml += `
+                results1Html += `
                     <p>Cutoff values of Cramer's V for ...</p>
                     <p>... small effect size: ${C8 > 1 ? "-" : C8.toFixed(3)}</p>
                     <p>... medium effect size: ${C9 > 1 ? "-" : C9.toFixed(3)}</p>
@@ -241,7 +250,7 @@
                 const J9 = formulas.J9(I9);
                 const J7 = formulas.J7(I7, B8, B9, B10, 'Very weak association', 'Weak association', 'Moderate association', 'Strong association');
 
-                resultsHtml += `
+                results2Html += `
                     <p>${J7} for the observed Cramer\'s V of ${I7.toFixed(3)}.</p>
                     <p>Estimated effect size: ${I9.toFixed(3)} ${J9}</p>
                     
@@ -249,15 +258,10 @@
             }
 
             // Display results
-            document.getElementById('results').innerHTML = resultsHtml;
+            document.getElementById('results1').innerHTML = results1Html;
+            document.getElementById('results2').innerHTML = results2Html;
         }
     </script>
-            </td>
-            <td></td>
-        </tr>
-        </tbody>
-        </table>
-    </div>
-<p></p>
+
 </body>
 </html>
