@@ -227,9 +227,9 @@
                 const intervalC9 = C9 > 1 ? 1 : C9.toFixed(3);
                 const intervalC10 = C10 > 1 ? 1 : C10.toFixed(3);
 
-                const weakAssociation = intervalC8 > 1 ? ' ' : `Between ${intervalC8} and ${intervalC9}: Weak association`;
-                const moderateAssociation = intervalC9 > 1 ? ' ' : `Between ${intervalC9} and ${intervalC10}: Moderate association`;
-                const strongAssociation = intervalC10 > 1 ? ' ' : `${intervalC10} and more: Strong association`;
+                const weakAssociation = intervalC8 >= 1 ? ' ' : `Between ${intervalC8} and ${intervalC9}: Weak association`;
+                const moderateAssociation = intervalC9 >= 1 ? ' ' : `Between ${intervalC9} and ${intervalC10}: Moderate association`;
+                const strongAssociation = intervalC10 >= 1 ? ' ' : `${intervalC10} and more: Strong association`;
 
                 results1Html += `
                     <p>Cutoff values of Cramer's V for ...</p>
